@@ -28,7 +28,6 @@ class EtsToolInstaller(qfw.FluentWindow):
             # 请求管理员权限
             self.request_admin_privileges()
             self.initUI()
-            self.set_window_icon()
         except Exception as e:
             self.log(f"初始化失败: {str(e)}")
             import traceback
@@ -104,6 +103,17 @@ class EtsToolInstaller(qfw.FluentWindow):
             about_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
             about_layout.addWidget(about_label)
             
+            # 添加GitHub用户名
+            github_name = qfw.StrongBodyLabel('wenfeng110402')
+            github_name.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            about_layout.addWidget(github_name)
+            
+            # 添加仓库地址链接
+            repo_link = qfw.HyperlinkLabel()
+            repo_link.setText('github.com/wenfeng110402/etsTool')
+            repo_link.setUrl('https://github.com/wenfeng110402/etsTool')
+            about_layout.addWidget(repo_link)
+            
             description = qfw.BodyLabel('这是一个用于安装和卸载 E听说外挂工具的程序。')
             description.setAlignment(Qt.AlignmentFlag.AlignCenter)
             about_layout.addWidget(description)
@@ -115,40 +125,6 @@ class EtsToolInstaller(qfw.FluentWindow):
             self.log(f"详细错误信息: {traceback.format_exc()}")
             show_error_and_wait(f"初始化UI失败: {str(e)}")
 
-    def set_window_icon(self):
-        '''设置窗口图标 - 适配PyInstaller打包'''
-        try:
-            if getattr(sys, 'frozen', False):
-                exe_dir = os.path.dirname(sys.executable)
-                icon_path1 = os.path.join(exe_dir, 'icon.ico')
-                temp_path = sys._MEIPASS
-                icon_path2 = os.path.join(temp_path, 'icon.ico')
-                if os.path.exists(icon_path1):
-                    self.log(f'''成功找到图标文件: {icon_path1}''')
-                    self.setWindowIcon(QIcon(icon_path1))
-                    self.log('窗口图标设置成功')
-                    return None
-                if os.path.exists(icon_path2):
-                    self.log(f'''成功找到图标文件: {icon_path2}''')
-                    self.setWindowIcon(QIcon(icon_path2))
-                    self.log('窗口图标设置成功')
-                    return None
-                self.log(f'''未找到图标文件: {icon_path1} 或 {icon_path2}''')
-                return None
-            base_path = os.path.dirname(os.path.abspath(__file__))
-            icon_path = os.path.join(base_path, 'icon.ico')
-            if os.path.exists(icon_path):
-                self.log(f'''成功找到图标文件: {icon_path}''')
-                self.setWindowIcon(QIcon(icon_path))
-                self.log('窗口图标设置成功')
-                return None
-            self.log(f'''未找到图标文件: {icon_path}''')
-            return None
-        except Exception as e:
-            self.log(f"设置窗口图标失败: {str(e)}")
-            import traceback
-            self.log(f"详细错误信息: {traceback.format_exc()}")
-            return None
 
     def log(self, message):
         '''记录操作日志 - 日志文件固定放在C盘根目录'''
