@@ -1,0 +1,230 @@
+#ets-dialog[open] {
+    background-color: transparent;
+    border: none;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    margin: none;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    box-sizing: content-box;
+}
+.ets-dialog-container {
+    backdrop-filter: blur(100px);
+    width: 80%;
+    height: 80%;
+    background-color: rgba(14, 18, 38, 0.9);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    padding: 15px;
+}
+.ets-dialog-container .closebtn {
+    box-sizing: border-box;
+    position: relative;
+    left: 98%;
+    width: 18px;
+    height: 18px;
+}
+.etsh-settings {
+    width: 100%;
+    height: 85%;
+    display: flex;
+    flex-direction: row;
+    margin-top: 6px;
+}
+.etsh-settings .categories {
+    width: 20%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(52, 57, 83);
+    border-radius: 5px;
+}
+.etsh-settings .current-category {
+    width: 80%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(38, 42, 61);
+    border-radius: 5px;
+}
+.etsh-settings .categories button {
+    background-color: rgba(95, 98, 105, 0.95);
+    padding: 3px;
+    margin-bottom: 3px;
+    color: #fff;
+}
+.etsh-settings .categories button:hover,
+.etsh-settings .categories button.active:hover {
+    background-color: rgba(111, 115, 124, 0.95);
+}
+.etsh-settings .categories button.active {
+    background-color: rgba(71, 75, 85, 0.95);
+}
+.ets-dialog-container .info {
+    display: flex;
+    flex-direction: row;
+}
+.ets-dialog-container .info img {
+    width: 40px;
+    height: 40px;
+}
+.ets-dialog-container .info .version {
+    display: flex;
+    flex-direction: column;
+}
+.settings-row {
+    height: 50px;
+    background-color: rgb(76, 81, 94);
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    color: #fff;
+    margin: 5px;
+    padding: 5px;
+}
+.settings-row:hover {
+    background-color: rgb(84, 88, 97);
+}
+.settings-row label.lb {
+    width: 80%;
+}
+.settings-row .item {
+    width: 18%;
+}
+
+._switch {
+    position: absolute;
+    right: 20px;
+}
+
+input.switch ~ ._switch::before {
+    content: '';
+    background-color: #ccc;
+    margin-left: -28px;
+    width: 45px;
+    display: block;
+    height: 25.5px;
+    border-radius: 50px;
+    transition: background-color 0.2s;
+}
+input.switch ~ ._switch::after {
+    content: '';
+    background-color: #fff;
+    border-radius: 50px;
+    width: 24px;
+    margin-left: -27px;
+    margin-top: -24.5px;
+    transition: margin 0.2s;
+    height: 24px;
+    display: block;
+}
+input.switch:checked ~ ._switch::after {
+    margin-left: -8px;
+}
+input.switch:checked ~ ._switch::before {
+    background-color: #6847e0;
+}
+input.switch {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.desc {
+    color: rgb(228, 228, 228);
+    font-size: smaller;
+}
+
+.settings-row-container {
+    flex-direction: column;
+    transition: height 0.2s;
+}
+.settings-row-container .config {
+    display: none;
+    background-color: rgb(76, 81, 94);
+    border-radius: 5px;
+}
+.settings-row-container.expand {
+    height: auto;
+}
+.settings-row-container.expand .config {
+    display: flex;
+    height: auto;
+    width: 100%;
+    flex-direction: column;
+    margin: 5px;
+}
+.settings-row-container.expand .et-row {
+    display: flex;
+    height: 30px;
+    width: 100%;
+    font-size: smaller;
+    flex-direction: row;
+}
+.settings-row-container.expand .et-row label.lb {
+    width: 70%;
+}
+.settings-row-container.expand .et-row .item {
+    width: 25%;
+    height: 25px;
+}
+.settings-row-container input[type='text'] {
+    border: none;
+    border-radius: 5px;
+}
+
+.ets-overlay {
+    pointer-events: none;
+    width: 100vw;
+    height: 100vh;
+    z-index: 100;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+}
+
+.etsh-overlay-window {
+    position: absolute;
+    min-width: 300px;
+    min-height: 15px;
+    width: auto;
+    height: auto;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    color: #000;
+    pointer-events: all;
+    overflow: hidden;
+    flex-direction: column;
+    display: flex;
+}
+.etsh-overlay-window .children {
+    flex-direction: column;
+}
+
+.etsh-overlay-window._minimized .children {
+    display: none;
+}
+
+.etsh-overlay-window .title {
+    background-color: rgb(0, 171, 0);
+    color: #fff;
+    width: 100%;
+    font-size: xx-small;
+    height: 15px;
+    display: flex;
+}
+.etsh-overlay-window .title p {
+    width: 90%;
+}
+
+.cracked-answer {
+    height: 400px;
+    width: 600px;
+}
