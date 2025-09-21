@@ -1,5 +1,8 @@
 # etsTool--全自动做e听说作业工具
 
+### 一个初中生的项目，喜欢的点个star支持一下
+## [原作者仓库](https://github.com/Howie114514/ETSToolbox)
+
 ## 使用方法
 
 - 安装原版电脑版e听说
