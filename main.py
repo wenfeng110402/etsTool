@@ -57,6 +57,7 @@ class EtsToolInstaller(qfw.FluentWindow):
 
     def initUI(self):
         try:
+            
             qfw.setTheme(qfw.Theme.DARK)
             self.setWindowTitle('E听说外挂工具安装器')
             self.setGeometry(100, 100, 800, 600)
@@ -67,28 +68,66 @@ class EtsToolInstaller(qfw.FluentWindow):
             self.main_layout = QVBoxLayout(self.main_widget)
             self.main_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
             
+            
             # 添加标题
-            title_label = qfw.TitleLabel('E听说外挂工具安装器')
+            title_label = qfw.TitleLabel('安装选项')
             title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
             self.main_layout.addWidget(title_label)
             
-            # 添加按钮区域
-            button_layout = QHBoxLayout()
-            button_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            # 创建卡片容器
+            cards_container = QWidget()
+            cards_layout = QHBoxLayout(cards_container)
+            cards_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            cards_layout.setSpacing(20)
             
-            # 安装按钮
-            install_button = qfw.PrimaryPushButton('安装', self.main_widget)
-            install_button.setFixedWidth(200)
-            install_button.clicked.connect(self.install)
-            button_layout.addWidget(install_button)
+            # 创建安装卡片
+            install_card = qfw.CardWidget(self.main_widget)
+            install_card.setFixedSize(200, 80)
+            install_layout = QHBoxLayout(install_card)
+            install_layout.setContentsMargins(15, 0, 15, 0)
+            install_layout.setSpacing(10)
             
-            # 卸载按钮
-            uninstall_button = qfw.PrimaryPushButton('卸载', self.main_widget)
-            uninstall_button.setFixedWidth(200)
-            uninstall_button.clicked.connect(self.uninstall)
-            button_layout.addWidget(uninstall_button)
+            # 安装图标
+            install_icon = qfw.IconWidget(qfw.FluentIcon.DOWN)
+            install_icon.setFixedSize(30, 30)
             
-            self.main_layout.addLayout(button_layout)
+            # 安装文本
+            install_label = qfw.BodyLabel('安装')
+            install_label.setStyleSheet("font-size: 16px; font-weight: bold;")
+            
+            install_layout.addWidget(install_icon)
+            install_layout.addWidget(install_label)
+            install_layout.addStretch()
+            
+            # 创建下载卡片
+            download_card = qfw.CardWidget(self.main_widget)
+            download_card.setFixedSize(200, 80)
+            download_layout = QHBoxLayout(download_card)
+            download_layout.setContentsMargins(15, 0, 15, 0)
+            download_layout.setSpacing(10)
+            
+            # 下载图标
+            download_icon = qfw.IconWidget(qfw.FluentIcon.CLOSE)
+            download_icon.setFixedSize(30, 30)
+            
+            # 下载文本
+            download_label = qfw.BodyLabel('下载')
+            download_label.setStyleSheet("font-size: 16px; font-weight: bold;")
+            
+            download_layout.addWidget(download_icon)
+            download_layout.addWidget(download_label)
+            download_layout.addStretch()
+            
+            # 为卡片添加点击事件
+            install_card.mousePressEvent = lambda event: self.install()
+            download_card.mousePressEvent = lambda event: self.uninstall()
+            
+            # 将卡片添加到布局中
+            cards_layout.addWidget(install_card)
+            cards_layout.addWidget(download_card)
+            
+            # 将卡片容器添加到主布局
+            self.main_layout.addWidget(cards_container)
             
             # 添加到导航界面
             self.addSubInterface(self.main_widget, qfw.FluentIcon.HOME, '开始')
@@ -104,9 +143,9 @@ class EtsToolInstaller(qfw.FluentWindow):
             about_layout.addWidget(about_label)
             
             # 添加GitHub用户名
-            github_name = qfw.StrongBodyLabel('wenfeng110402')
-            github_name.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            about_layout.addWidget(github_name)
+            # github_name = qfw.StrongBodyLabel('wenfeng110402')
+            # github_name.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            # about_layout.addWidget(github_name)
             
             # 添加仓库地址链接
             repo_link = qfw.HyperlinkLabel()
