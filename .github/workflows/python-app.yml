@@ -1,4 +1,4 @@
-# This workflow will install dependencies, run checks, and build a single EXE with all resources
+# 仅用于构建Windows可执行程序的工作流配置
 name: Build etsTool EXE
 
 on:
@@ -9,11 +9,11 @@ on:
 
 permissions:
   contents: read
-  actions: write  # 用于上传构建产物
+  actions: write
 
 jobs:
   build:
-    runs-on: windows-latest  # 使用Windows环境构建EXE
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v4  # 拉取代码仓库
@@ -26,34 +26,25 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install flake8 pytest
+        pip install flake8  # 保留代码检查（可选，可删除）
         if (Test-Path requirements.txt) { pip install -r requirements.txt }
         pip install pyinstaller  # 安装打包工具
 
-    - name: Lint with flake8
+    - name: Lint with flake8  # 代码检查步骤（可选，可删除）
       run: |
-        # 检查语法错误和未定义变量（阻断构建）
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        # 其他检查作为警告（不阻断构建）
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-
-    - name: Test with pytest
-      run: pytest
-      continue-on-error: true  # 即使没有测试用例也继续构建
 
     - name: Build single EXE with pyinstaller
       run: |
-        # 打包主程序，包含所有资源文件
-        pyinstaller --name etsTool \
-                    --onefile \
-                    --windowed \
-                    --add-data "etsTool/Resource;Resource" \  # 包含Resource文件夹
-                    --add-data "etsTool/readme.md;." \      # 包含说明文件
-                    --add-data "etsTool/license;." \        # 包含许可证文件
-                    etsTool/main.py
+        pyinstaller --name etsTool --onefile --windowed `
+          --add-data "etsTool/Resource;Resource" `
+          --add-data "etsTool/readme.md;." `
+          --add-data "etsTool/license;." `
+          etsTool/main.py
 
     - name: Upload EXE artifact
       uses: actions/upload-artifact@v4
       with:
         name: etsTool-windows-exe
-        path: dist/etsTool.exe  # 只上传最终的EXE文件
+        path: dist/etsTool.exe
