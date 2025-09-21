@@ -1,4 +1,3 @@
-
 import sys
 import os
 import shutil
@@ -111,7 +110,7 @@ class EtsToolInstaller(qfw.FluentWindow):
             download_icon.setFixedSize(30, 30)
             
             # 下载文本
-            download_label = qfw.BodyLabel('下载')
+            download_label = qfw.BodyLabel('卸载')
             download_label.setStyleSheet("font-size: 16px; font-weight: bold;")
             
             download_layout.addWidget(download_icon)
