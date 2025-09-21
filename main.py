@@ -138,24 +138,102 @@ class EtsToolInstaller(qfw.FluentWindow):
             about_layout = QVBoxLayout(self.about_widget)
             about_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
             
-            about_label = qfw.SubtitleLabel('关于 E听说外挂工具')
-            about_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            about_layout.addWidget(about_label)
+            # 创建卡片容器
+            about_cards_container = QWidget()
+            about_cards_layout = QHBoxLayout(about_cards_container)
+            about_cards_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            about_cards_layout.setSpacing(20)
             
-            # 添加GitHub用户名
-            # github_name = qfw.StrongBodyLabel('wenfeng110402')
-            # github_name.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            # about_layout.addWidget(github_name)
+            # 创建作者信息卡片
+            author_card = qfw.CardWidget(self.about_widget)
+            author_card.setFixedSize(240, 100)
+            author_layout = QHBoxLayout(author_card)
+            author_layout.setContentsMargins(15, 0, 15, 0)
+            author_layout.setSpacing(10)
             
-            # 添加仓库地址链接
-            repo_link = qfw.HyperlinkLabel()
-            repo_link.setText('github.com/wenfeng110402/etsTool')
-            repo_link.setUrl('https://github.com/wenfeng110402/etsTool')
-            about_layout.addWidget(repo_link)
+            # 作者图标
+            author_icon = qfw.IconWidget(qfw.FluentIcon.GITHUB)
+            author_icon.setFixedSize(30, 30)
             
-            description = qfw.BodyLabel('这是一个用于安装和卸载 E听说外挂工具的程序。')
-            description.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            about_layout.addWidget(description)
+            # 作者信息
+            author_label = qfw.BodyLabel('wenfeng110402')
+            author_label.setStyleSheet("font-size: 16px; font-weight: bold;")
+            
+            author_layout.addWidget(author_icon)
+            author_layout.addWidget(author_label)
+            author_layout.addStretch()
+            
+            # 为作者卡片添加点击事件，跳转到GitHub个人主页
+            def open_github_profile(event):
+                import webbrowser
+                webbrowser.open('https://github.com/wenfeng110402')
+            
+            author_card.mousePressEvent = open_github_profile
+            
+            # 创建使用说明卡片
+            readme_card = qfw.CardWidget(self.about_widget)
+            readme_card.setFixedSize(240, 100)
+            readme_layout = QVBoxLayout(readme_card)
+            readme_layout.setContentsMargins(15, 10, 15, 10)
+            
+            # 使用说明标题
+            readme_title = qfw.StrongBodyLabel('使用教程')
+            readme_title.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            readme_layout.addWidget(readme_title)
+            
+            # 为使用说明卡片添加点击事件，显示readme内容
+            def show_readme_tooltip(event):
+                title = '使用教程'
+                content = """- 安装原版电脑版e听说
+- 打开此工具，选择安装
+- F1打开控制面板，F12打开js编辑器
+- 控制面板内右键相关选项可以输入具体参数，使用时只需挂机或人工一直点击跳过（非模考）"""
+                w = qfw.MessageBox(title, content, self.about_widget)
+                w.setClosableOnMaskClicked(True)
+                w.setDraggable(True)
+                w.exec()
+
+            readme_card.mousePressEvent = show_readme_tooltip
+            
+            
+            # 创建GitHub仓库卡片
+            github_card = qfw.CardWidget(self.about_widget)
+            github_card.setFixedSize(240, 100)
+            github_layout = QHBoxLayout(github_card)
+            github_layout.setContentsMargins(15, 0, 15, 0)
+            github_layout.setSpacing(10)
+            
+            # GitHub图标
+            github_icon = qfw.IconWidget(qfw.FluentIcon.GITHUB)
+            github_icon.setFixedSize(30, 30)
+            
+            # GitHub仓库标签
+            github_label = qfw.BodyLabel('项目仓库')
+            github_label.setStyleSheet("font-size: 16px; font-weight: bold;")
+            
+            github_layout.addWidget(github_icon)
+            github_layout.addWidget(github_label)
+            github_layout.addStretch()
+            
+            # 为GitHub卡片添加点击事件，跳转到项目仓库
+            def open_github_repo(event):
+                import webbrowser
+                webbrowser.open('https://github.com/wenfeng110402/etsTool')
+            
+            github_card.mousePressEvent = open_github_repo
+            
+            # 设置所有卡片的布局边距
+            author_layout.setContentsMargins(15, 0, 15, 0)
+            readme_layout.setContentsMargins(15, 10, 15, 10)
+            github_layout.setContentsMargins(15, 0, 15, 0)
+            
+            # 将卡片添加到布局中
+            about_cards_layout.addWidget(author_card)
+            about_cards_layout.addWidget(readme_card)
+            about_cards_layout.addWidget(github_card)
+            
+            # 将卡片容器添加到关于页面布局
+            about_layout.addWidget(about_cards_container)
             
             self.addSubInterface(self.about_widget, qfw.FluentIcon.INFO, '关于')
         except Exception as e:
@@ -319,10 +397,25 @@ class EtsToolInstaller(qfw.FluentWindow):
                     self.log(f"详细错误信息: {traceback.format_exc()}")
                     dll_success = False
             if dll_success:
-                QMessageBox.information(self, '成功', '安装完成！')
-                self.log('安装成功完成')
+                qfw.InfoBar.success(
+                    title='安装完成！',
+                    content='安装已成功完成。',
+                    orient=Qt.Orientation.Horizontal,
+                    isClosable=True,
+                    position=qfw.InfoBarPosition.TOP,
+                    duration=2000,
+                    parent=self
+                )
             else:
-                QMessageBox.warning(self, '警告', '安装完成，但部分DLL文件复制失败！')
+                qfw.InfoBar.success(
+                    title='安装完成！',
+                    content='安装完成，但部分DLL文件复制失败！',
+                    orient=Qt.Orientation.Horizontal,
+                    isClosable=True,
+                    position=qfw.InfoBarPosition.TOP,
+                    duration=2000,
+                    parent=self
+                )
                 self.log('安装完成，但部分DLL文件复制失败')
         except Exception as e:
             self.log(f"安装过程出现异常: {str(e)}")
@@ -380,10 +473,26 @@ class EtsToolInstaller(qfw.FluentWindow):
                     self.log(f"详细错误信息: {traceback.format_exc()}")
                     dll_success = False
             if dll_success:
-                QMessageBox.information(self, '成功', '卸载完成！')
+                qfw.InfoBar.success(
+                    title='卸载完成！',
+                    content='卸载已成功完成。',
+                    orient=Qt.Orientation.Horizontal,
+                    isClosable=True,
+                    position=qfw.InfoBarPosition.TOP,
+                    duration=2000,
+                    parent=self
+                )
                 self.log('卸载成功完成')
             else:
-                QMessageBox.warning(self, '警告', '卸载完成，但部分DLL文件删除失败！')
+                qfw.InfoBar.success(
+                    title='卸载完成！',
+                    content='卸载完成，但部分DLL文件删除失败！',
+                    orient=Qt.Orientation.Horizontal,
+                    isClosable=True,
+                    position=qfw.InfoBarPosition.TOP,
+                    duration=2000,
+                    parent=self
+                )
                 self.log('卸载完成，但部分DLL文件删除失败')
         except Exception as e:
             self.log(f"卸载过程出现异常: {str(e)}")
