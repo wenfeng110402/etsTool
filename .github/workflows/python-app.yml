@@ -15,9 +15,9 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v4  # 拉取代码到工作目录
+    - uses: actions/checkout@v4
 
-    - name: Set up Python 3.10
+    - name: Set up Python 3.11
       uses: actions/setup-python@v3
       with:
         python-version: "3.11"
@@ -36,12 +36,12 @@ jobs:
 
     - name: Build single EXE with pyinstaller
       run: |
-        # 打包整个Resource目录（包含所有子文件和子目录）
         pyinstaller --name etsTool --onefile --windowed `
-          --add-data "Resource/*;Resource" `  # 关键：*表示包含目录内所有内容
-          --add-data "readme.md;." `
-          --add-data "license;." `
-          main.py
+        --add-data "Resource/*;Resource" `
+        --add-data "readme.md;." `
+        --add-data "license;." `
+        main.py
+      # 注意：反引号(`)必须紧跟在参数后面，不能有空格
 
     - name: Upload EXE artifact
       uses: actions/upload-artifact@v4
